@@ -14,15 +14,16 @@ This document summarizes key rules and best practices from the Google C# Style G
 - **Async Methods:** Suffix with `Async` (e.g., `GetDataAsync()`).
 
 ## 2. Formatting Rules
-- **Indentation:** Use 4 spaces (never tabs).
-- **Braces:** Use Allman style (braces on new lines). Required for all control structures.
+- **Indentation:** Use 2 spaces (never tabs).
+- **Braces:** K&R style—no line break before the opening brace; keep `} else` on one line; braces required even when optional.
   ```csharp
-  if (condition)
-  {
-      DoSomething();
+  if (condition) {
+    DoSomething();
+  } else {
+    DoSomethingElse();
   }
   ```
-- **Line Length:** No strict limit, but aim for readability (typically 100-120 characters).
+- **Line Length:** Column limit 100.
 - **One Statement Per Line:** Each statement on its own line.
 - **Column Alignment:** Align consecutive declarations and assignments for readability when appropriate.
 
@@ -50,10 +51,10 @@ Within a class, enum, interface, or struct:
   var count = GetCount();  // OK only if return type is clear
   string explicitType = GetValue();  // Better when type isn't obvious
   ```
-- **Expression-bodied Members:** Use for simple one-liners.
+- **Expression-bodied Members:** Use sparingly for simple properties and lambdas; don't use on method definitions.
   ```csharp
   public int Age => _age;
-  public void Print() => Console.WriteLine("Hello");
+  // Methods: prefer block bodies.
   ```
 - **String Interpolation:** Prefer string interpolation over `String.Format()` or concatenation.
   ```csharp
@@ -76,14 +77,7 @@ Within a class, enum, interface, or struct:
 - **Access Modifiers:** Always explicitly declare access modifiers (don't rely on defaults).
 - **this:** Do not use `this.` unless required for disambiguation.
 - **Ordering Modifiers:** Use standard order: `public protected private internal static extern new virtual abstract sealed override readonly unsafe volatile async`.
-- **Namespace Imports:** Place `using` directives inside the namespace declaration.
-  ```csharp
-  namespace MyNamespace
-  {
-      using System;
-      using System.Collections.Generic;
-  }
-  ```
+- **Namespace Imports:** Place `using` directives at the top of the file (outside namespaces); `System` first, then alphabetical.
 - **LINQ:** Use LINQ for readability, but be mindful of performance in hot paths.
 - **String Comparison:** Use `StringComparison` parameter for string comparisons.
   ```csharp
@@ -109,10 +103,12 @@ Within a class, enum, interface, or struct:
 
 ## 8. Disallowed Features
 - **goto:** Do not use `goto` statements.
-- **out parameters:** Prefer tuples or custom return types over `out` parameters where possible.
 - **#regions:** **Avoid `#region`**. Organize code with proper file structure instead.
 
-## 9. Modern C# Features
+## 9. Parameters and Returns
+- **out Parameters:** Permitted for output-only values; place `out` parameters after all other parameters. Prefer tuples or return types when they improve clarity.
+
+## 10. Modern C# Features
 - **Nullable Reference Types:** Enable and use nullable reference types (`#nullable enable`).
 - **Records:** Use record types for immutable data models.
 - **Init-only Properties:** Use `init` for immutable properties after construction.
